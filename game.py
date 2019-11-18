@@ -1,5 +1,5 @@
 import random
-import numpy as np 
+import numpy as np
 import matplotlib.pyplot as plt
 """
 1 - silent
@@ -9,8 +9,6 @@ GAME MATRIX
 both betray -- both -2
 both silent -- both -1
 one betrays, one silent = 0/ -3
-
-
 """
 
 
@@ -73,12 +71,33 @@ def run_simulation(steps):
         playerA.payoffs.append(scoreA)
         playerB.payoffs.append(scoreB)
 
+    text = '\n'.join([
+        f'mean payoffA: {np.mean(playerA.payoffs)}',
+        f'mean payoffB: {np.mean(playerB.payoffs)}',
+        f'std payoffA: {np.std(playerA.payoffs)}',
+        f'std payoffA: {np.std(playerB.payoffs)}'
+    ])
+    print(f"Text {text}")
+    # place a text box in upper left in axes coords
+
     assert len(playerA.history) == len(playerB.history)
     assert len(playerA.payoffs) == len(playerB.payoffs)
 
-    plt.plot(np.cumsum(playerA.payoffs), '.', label='A payoff')
-    plt.plot(np.cumsum(playerB.payoffs), '.', label='B payoff')
-    plt.legend()
+    fig, ax = plt.subplots()
+
+    ax.plot(np.cumsum(playerA.payoffs), '.', label='A payoff')
+    ax.plot(np.cumsum(playerB.payoffs), '.', label='B payoff')
+    props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
+
+    ax.text(0.95,
+            0.01,
+            text,
+            verticalalignment='bottom',
+            horizontalalignment='right',
+            transform=ax.transAxes,
+            bbox=props,
+            fontsize=15)
+    ax.legend()
     plt.xlabel("Iteration")
     plt.ylabel("Cumulative payoff")
     plt.title(f"Cumsum of A: {playerA.strategy} B: {playerB.strategy}")
