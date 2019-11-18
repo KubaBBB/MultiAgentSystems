@@ -85,19 +85,21 @@ def evaluate_players(player_a_move, player_b_move):
         return 0, -3
 
 
-def run_simulation(steps, plot=True):
+def run_simulation(steps, epochs=100, plot=True):
     playerA = Player('random')
     playerB = Player('2tft')
-    for i in range(steps):
-        moveA = playerA.make_move(i, playerB.history)
-        moveB = playerB.make_move(i, playerA.history)
-        scoreA, scoreB = evaluate_players(moveA, moveB)
-        playerA.history.append(moveA)
-        playerB.history.append(moveB)
+    for epoch in range(epochs):
+        for i in range(steps):
+            moveA = playerA.make_move(i, playerB.history)
+            moveB = playerB.make_move(i, playerA.history)
+            scoreA, scoreB = evaluate_players(moveA, moveB)
+            playerA.history.append(moveA)
+            playerB.history.append(moveB)
 
-        playerA.payoffs.append(scoreA)
-        playerB.payoffs.append(scoreB)
-
+            playerA.payoffs.append(scoreA)
+            playerB.payoffs.append(scoreB)
+            # print(np.mean(playerA.payoffs), np.mean(playerB.payoffs), np.std(
+            #         playerA.payoffs), np.std(playerB.payoffs))
     text = '\n'.join([
         f'mean payoffA: {np.mean(playerA.payoffs)}',
         f'mean payoffB: {np.mean(playerB.payoffs)}',
@@ -135,4 +137,15 @@ def run_simulation(steps, plot=True):
 
 
 if __name__ == "__main__":
-    pAmean, pBmean, pAstd, pBstd = run_simulation(100)
+    t_pAmean, t_pBmean, t_pAstd, t_pBstd = 0, 0, 0, 0
+    num_runs = 1
+    plot = False if num_runs > 1 else True
+    for i in range(num_runs):
+        pAmean, pBmean, pAstd, pBstd = run_simulation(100, plot=plot)  
+        t_pAmean += pAmean
+        t_pBmean += pBmean
+        t_pAstd += pAstd
+        t_pBstd += pBstd
+
+    print(f"Player A: {t_pAmean/num_runs}, {t_pAstd/num_runs}")
+    print(f"Player B: {t_pBmean/num_runs}, {t_pBstd/num_runs}")
