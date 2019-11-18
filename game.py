@@ -18,6 +18,8 @@ class Player:
         self.history = []
         self.payoffs = []
 
+        self.revenge_counter = 0
+
     def make_move(self, step, history_other):
         if self.strategy == 'random':
             return int(random.random() > 0.5)
@@ -35,13 +37,38 @@ class Player:
                 return 1
             last_player_step = history_other[-1]
             try:
-                penultimous_step = history_other[-1]
-                if history_other[-1] == penultimous_step == 0:
+                penultimous_step = history_other[-2]
+                if last_player_step == penultimous_step == 0:
                     return 0
                 else:
                     return 1
             except IndexError:
-                return last_player_step
+                return 1
+        elif self.strategy == '2tft':
+            # replicate last with forgetting
+            if step == 0:
+                return 1
+            last_player_step = history_other[-1]
+            try:
+                penultimous_step = history_other[-2]
+                if last_player_step == penultimous_step == 0:
+                    # other betrayed twice
+                    # revenge is twice
+                    self.revenge_counter = 1
+                    return 0
+                else:
+                    if self.revenge_counter:
+                        self.revenge_counter -= 1
+                        return 0
+                    else:
+                        return 1
+            except IndexError:
+                # second move is also always 1
+                return 1
+        elif self.strategy == 'always_defect':
+            return 1
+        elif self.strategy == 'always_cooperate':
+            return 0
 
 
 def evaluate_players(player_a_move, player_b_move):
@@ -58,9 +85,9 @@ def evaluate_players(player_a_move, player_b_move):
         return 0, -3
 
 
-def run_simulation(steps):
+def run_simulation(steps, plot=True):
     playerA = Player('random')
-    playerB = Player('tft2')
+    playerB = Player('2tft')
     for i in range(steps):
         moveA = playerA.make_move(i, playerB.history)
         moveB = playerB.make_move(i, playerA.history)
@@ -83,26 +110,29 @@ def run_simulation(steps):
     assert len(playerA.history) == len(playerB.history)
     assert len(playerA.payoffs) == len(playerB.payoffs)
 
-    fig, ax = plt.subplots()
+    if plot:
+        fig, ax = plt.subplots()
 
-    ax.plot(np.cumsum(playerA.payoffs), '.', label='A payoff')
-    ax.plot(np.cumsum(playerB.payoffs), '.', label='B payoff')
-    props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
+        ax.plot(np.cumsum(playerA.payoffs), '.', label='A payoff')
+        ax.plot(np.cumsum(playerB.payoffs), '.', label='B payoff')
+        props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
 
-    ax.text(0.95,
-            0.01,
-            text,
-            verticalalignment='bottom',
-            horizontalalignment='right',
-            transform=ax.transAxes,
-            bbox=props,
-            fontsize=15)
-    ax.legend()
-    plt.xlabel("Iteration")
-    plt.ylabel("Cumulative payoff")
-    plt.title(f"Cumsum of A: {playerA.strategy} B: {playerB.strategy}")
-    plt.show()
+        ax.text(0.95,
+                0.01,
+                text,
+                verticalalignment='bottom',
+                horizontalalignment='right',
+                transform=ax.transAxes,
+                bbox=props,
+                fontsize=15)
+        ax.legend()
+        plt.xlabel("Iteration")
+        plt.ylabel("Cumulative payoff")
+        plt.title(f"Cumsum of A: {playerA.strategy} B: {playerB.strategy}")
+        plt.show()
+    return np.mean(playerA.payoffs), np.mean(playerB.payoffs), np.std(
+        playerA.payoffs), np.std(playerB.payoffs)
 
 
 if __name__ == "__main__":
-    run_simulation(100)
+    pAmean, pBmean, pAstd, pBstd = run_simulation(100)
