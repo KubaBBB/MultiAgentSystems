@@ -105,7 +105,7 @@ def run_simulation(steps, epochs=1, plot=True):
         for i in range(steps):
             if playerA.mixed:
                 playerA.choose_strategy()
-            if playerB.choose_strategy():
+            if playerB.mixed:
                 playerB.choose_strategy()
             moveA = playerA.make_move(i, playerB.history)
             moveB = playerB.make_move(i, playerA.history)
