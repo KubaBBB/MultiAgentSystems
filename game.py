@@ -13,12 +13,25 @@ one betrays, one silent = 0/ -3
 
 
 class Player:
-    def __init__(self, strategy):
+    def __init__(self, strategy, mixed=False):
+        self.mixed = mixed
+        self.counter = 0
         self.strategy = strategy
         self.history = []
         self.payoffs = []
 
         self.revenge_counter = 0
+
+    def choose_strategy(self):
+        strategies = ['tft', '2tft', 'random', 'always_defect', 'always_cooperate', 'tft2']
+        if self.mixed:
+            if self.counter < 8 and self.counter != 0:
+                self.counter += 1
+            else:
+                self.counter = 0
+                self.strategy = random.choice(strategies)
+        else:
+            return
 
     def make_move(self, step, history_other):
         if self.strategy == 'random':
@@ -32,7 +45,7 @@ class Player:
                 return last_player_step
 
         elif self.strategy == 'tft2':
-            # replicate last with forgetting
+                # replicate last with forgetting
             if step == 0:
                 return 1
             last_player_step = history_other[-1]
@@ -45,15 +58,15 @@ class Player:
             except IndexError:
                 return 1
         elif self.strategy == '2tft':
-            # replicate last with forgetting
+                # replicate last with forgetting
             if step == 0:
                 return 1
             last_player_step = history_other[-1]
             try:
                 penultimous_step = history_other[-2]
                 if last_player_step == penultimous_step == 0:
-                    # other betrayed twice
-                    # revenge is twice
+                        # other betrayed twice
+                        # revenge is twice
                     self.revenge_counter = 1
                     return 0
                 else:
@@ -63,7 +76,7 @@ class Player:
                     else:
                         return 1
             except IndexError:
-                # second move is also always 1
+                    # second move is also always 1
                 return 1
         elif self.strategy == 'always_defect':
             return 1
@@ -85,11 +98,15 @@ def evaluate_players(player_a_move, player_b_move):
         return 0, -3
 
 
-def run_simulation(steps, epochs=100, plot=True):
-    playerA = Player('random')
-    playerB = Player('2tft')
+def run_simulation(steps, epochs=1, plot=True):
+    playerA = Player('random', True)
+    playerB = Player('2tft', True)
     for epoch in range(epochs):
         for i in range(steps):
+            if playerA.mixed:
+                playerA.choose_strategy()
+            if playerB.choose_strategy():
+                playerB.choose_strategy()
             moveA = playerA.make_move(i, playerB.history)
             moveB = playerB.make_move(i, playerA.history)
             scoreA, scoreB = evaluate_players(moveA, moveB)
