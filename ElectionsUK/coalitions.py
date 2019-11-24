@@ -12,7 +12,6 @@ def compute_coalitions(filepath):
         if seats:
             party_dict[party] = seats
     shapley_value(party_dict)
-    # print(party_dict)
 
 
 def shapley_value(party_dict):
@@ -30,7 +29,6 @@ def shapley_value(party_dict):
             coalition_dict[permutation] = coalition_value
             combinations += 1
     print(f"Possible combinations: {combinations}")
-    # print(coalition_dict)
     player_inputs = Counter()
     player_participations = Counter()
     print("Calculating player's inputs")
@@ -41,7 +39,8 @@ def shapley_value(party_dict):
                 playerless_value = coalition_dict[playerless_coalition]
             else:
                 playerless_value = 0
-            player_inputs[player] += (party_dict[player] - playerless_value)
+            player_inputs[player] += (coalition_dict[coalition] -
+                                      playerless_value)
             player_participations[player] += 1
 
     for player in player_inputs:
@@ -57,12 +56,11 @@ def calcualte_permutation_value(party_dict, permutation, winning_seats):
     seats = 0
     for coalition_member in permutation:
         seats += party_dict[coalition_member]
-        if seats > winning_seats:
-            return 1
-        else:
-            return 0
+    if seats > winning_seats:
+        return 1.0
+    return 0.0
 
 
-filepath = '/Users/jakubmojsiejuk/Documents/agh/game-gym/PrisonersDilemma/ElectionsUK/resources/2017.csv'
-filepath = '/Users/jakubmojsiejuk/Documents/agh/game-gym/PrisonersDilemma/ElectionsUK/resources/eu2014.csv'
+filepath = '/Users/jakubmojsiejuk/Documents/agh/game-gym/PrisonersDilemma/ElectionsUK/resources/2015.csv'
+# filepath = '/Users/jakubmojsiejuk/Documents/agh/game-gym/PrisonersDilemma/ElectionsUK/resources/eu2014.csv'
 compute_coalitions(filepath)
