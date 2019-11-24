@@ -23,7 +23,10 @@ class Player:
         self.revenge_counter = 0
 
     def choose_strategy(self):
-        strategies = ['tft', '2tft', 'random', 'always_defect', 'always_cooperate', 'tft2']
+        strategies = [
+            'tft', '2tft', 'random', 'always_defect', 'always_cooperate',
+            'tft2'
+        ]
         if self.mixed:
             if self.counter < 8 and self.counter != 0:
                 self.counter += 1
@@ -45,7 +48,7 @@ class Player:
                 return last_player_step
 
         elif self.strategy == 'tft2':
-                # replicate last with forgetting
+            # replicate last with forgetting
             if step == 0:
                 return 1
             last_player_step = history_other[-1]
@@ -58,15 +61,15 @@ class Player:
             except IndexError:
                 return 1
         elif self.strategy == '2tft':
-                # replicate last with forgetting
+            # replicate last with forgetting
             if step == 0:
                 return 1
             last_player_step = history_other[-1]
             try:
                 penultimous_step = history_other[-2]
                 if last_player_step == penultimous_step == 0:
-                        # other betrayed twice
-                        # revenge is twice
+                    # other betrayed twice
+                    # revenge is twice
                     self.revenge_counter = 1
                     return 0
                 else:
@@ -76,7 +79,7 @@ class Player:
                     else:
                         return 1
             except IndexError:
-                    # second move is also always 1
+                # second move is also always 1
                 return 1
         elif self.strategy == 'always_defect':
             return 1
@@ -158,7 +161,7 @@ if __name__ == "__main__":
     num_runs = 1
     plot = False if num_runs > 1 else True
     for i in range(num_runs):
-        pAmean, pBmean, pAstd, pBstd = run_simulation(100, plot=plot)  
+        pAmean, pBmean, pAstd, pBstd = run_simulation(100, plot=plot)
         t_pAmean += pAmean
         t_pBmean += pBmean
         t_pAstd += pAstd
