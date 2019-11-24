@@ -6,11 +6,11 @@ from collections import Counter
 def compute_coalitions(filepath):
     df = pd.read_csv(filepath, sep=';')
     print(df.columns)
-    party_records = df[['Party', 'Seats ']].to_records()
+    party_records = df[['Party', 'Seats']].to_records()
     party_dict = {}
     for indx, party, seats in party_records:
-        # if seats:
-        party_dict[party] = seats
+        if seats:
+            party_dict[party] = seats
     shapley_value(party_dict)      
     # print(party_dict)
 
@@ -28,16 +28,17 @@ def shapley_value(party_dict):
             coalition_dict[permutation] = coalition_value
             combinations += 1
     print(f"Possible combinations: {combinations}")
-    print(coalition_dict)
+    # print(coalition_dict)
     player_inputs = Counter()
     player_participations = Counter()
     print("Calculating player's inputs")
     for coalition in coalition_dict:
         for i, player in enumerate(coalition):
             playerless_coalition = coalition[:i]
-            playerless_value = 0
             if len(playerless_coalition) != 0:
                 playerless_value = coalition_dict[playerless_coalition]
+            else:
+                playerless_value = 0
             player_inputs[player] += (party_dict[player] - playerless_value)
             player_participations[player] += 1
 
@@ -61,4 +62,5 @@ def calcualte_permutation_value(party_dict, permutation, total_seats):
 
 
 filepath = '/Users/jakubmojsiejuk/Documents/agh/game-gym/PrisonersDilemma/ElectionsUK/resources/2015.csv'
+filepath = '/Users/jakubmojsiejuk/Documents/agh/game-gym/PrisonersDilemma/ElectionsUK/resources/eu2019.csv'
 compute_coalitions(filepath)
