@@ -6,7 +6,6 @@ from collections import Counter
 
 def compute_coalitions(filepath):
     df = pd.read_csv(filepath, sep=';')
-    print(df.columns)
     party_records = df[['Party', 'Seats']].to_records()
     party_dict = {}
     for indx, party, seats in party_records:
@@ -65,5 +64,5 @@ def calcualte_permutation_value(party_dict, permutation, winning_seats):
 
 
 filepath = '/Users/jakubmojsiejuk/Documents/agh/game-gym/PrisonersDilemma/ElectionsUK/resources/2017.csv'
-# filepath = '/Users/jakubmojsiejuk/Documents/agh/game-gym/PrisonersDilemma/ElectionsUK/resources/eu2019.csv'
+filepath = '/Users/jakubmojsiejuk/Documents/agh/game-gym/PrisonersDilemma/ElectionsUK/resources/eu2014.csv'
 compute_coalitions(filepath)
