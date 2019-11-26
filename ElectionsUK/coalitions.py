@@ -45,10 +45,14 @@ def shapley_value(party_dict):
 
     # get all winning_coalitions
     winning_coals = [coal for coal, val in coalition_dict.items() if val]
-    winning_coals = [tuple(coal) for coal in set(map(frozenset, winning_coals))]
+    winning_coals = [
+        tuple(coal) for coal in set(map(frozenset, winning_coals))
+    ]
     print(f"There are: {len(winning_coals)} winning coalitions")
     for coal in winning_coals:
-        print(coal)
+        print(
+            f"\tCoalition: {', '.join(coal)} has " +\
+                f"{sum([party_dict[party] for party in coal])} votes.")
 
     for player in player_inputs:
         shapley_value = player_inputs[player] / player_participations[player]
