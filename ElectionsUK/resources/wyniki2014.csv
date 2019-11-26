@@ -1,0 +1,128 @@
+;Party;Seats
+0;['NI', 'S&D', 'GUE/NGL', 'ECR', 'ALDE', 'EPP'];653
+1;['NI', 'S&D', 'GUE/NGL', 'ECR', 'EFDD', 'EPP'];634
+2;['NI', 'ALDE', 'ECR', 'Greens/EFA', 'EPP'];460
+3;['NI', 'ECR', 'Greens/EFA', 'EFDD', 'EPP'];441
+4;['NI', 'S&D', 'ECR', 'ALDE', 'Greens/EFA', 'EFDD', 'EPP'];699
+5;['EPP', 'ALDE', 'GUE/NGL', 'EFDD'];388
+6;['NI', 'S&D', 'GUE/NGL', 'ALDE', 'Greens/EFA', 'EPP'];633
+7;['NI', 'S&D', 'GUE/NGL', 'Greens/EFA', 'EFDD', 'EPP'];614
+8;['Greens/EFA', 'EPP', 'S&D', 'ALDE'];529
+9;['NI', 'GUE/NGL', 'Greens/EFA', 'EFDD', 'EPP'];423
+10;['S&D', 'GUE/NGL', 'ECR', 'ALDE', 'EFDD'];428
+11;['S&D', 'GUE/NGL', 'ECR', 'ALDE', 'Greens/EFA', 'EFDD', 'EPP'];699
+12;['Greens/EFA', 'S&D', 'ECR', 'ALDE'];378
+13;['S&D', 'GUE/NGL', 'ALDE', 'EFDD', 'EPP'];579
+14;['EPP', 'S&D', 'ECR', 'ALDE'];549
+15;['NI', 'GUE/NGL', 'ECR', 'EFDD', 'EPP'];443
+16;['S&D', 'GUE/NGL', 'ALDE', 'Greens/EFA', 'EFDD'];408
+17;['NI', 'GUE/NGL', 'ECR', 'Greens/EFA', 'EFDD', 'EPP'];493
+18;['NI', 'ALDE', 'GUE/NGL', 'ECR', 'Greens/EFA', 'EPP'];512
+19;['EPP', 'GUE/NGL', 'ALDE', 'ECR'];410
+20;['NI', 'S&D', 'ECR', 'EFDD', 'EPP'];582
+21;['EPP', 'GUE/NGL', 'ECR', 'EFDD'];391
+22;['NI', 'S&D', 'ECR', 'ALDE', 'EPP'];601
+23;['NI', 'S&D', 'GUE/NGL', 'ECR', 'Greens/EFA', 'EPP'];636
+24;['S&D', 'GUE/NGL', 'ECR', 'ALDE', 'Greens/EFA', 'EFDD'];478
+25;['NI', 'S&D', 'GUE/NGL', 'ALDE', 'EPP'];583
+26;['EPP', 'S&D', 'ALDE', 'EFDD'];527
+27;['S&D', 'GUE/NGL', 'ECR', 'ALDE', 'Greens/EFA'];430
+28;['NI', 'ALDE', 'GUE/NGL', 'EFDD', 'EPP'];440
+29;['S&D', 'GUE/NGL', 'ECR', 'Greens/EFA', 'EFDD'];411
+30;['NI', 'S&D', 'GUE/NGL', 'ECR', 'ALDE'];432
+31;['Greens/EFA', 'EPP', 'ECR', 'EFDD'];389
+32;['NI', 'ALDE', 'GUE/NGL', 'ECR', 'EFDD', 'EPP'];510
+33;['EPP', 'S&D', 'GUE/NGL', 'EFDD'];512
+34;['EPP', 'GUE/NGL', 'S&D', 'ALDE'];531
+35;['S&D', 'ECR', 'ALDE', 'Greens/EFA', 'EFDD'];426
+36;['NI', 'S&D', 'ECR', 'ALDE'];380
+37;['Greens/EFA', 'EPP', 'ALDE', 'EFDD'];386
+38;['NI', 'S&D', 'GUE/NGL', 'Greens/EFA', 'EPP'];566
+39;['NI', 'S&D', 'ECR', 'Greens/EFA', 'EFDD', 'EPP'];632
+40;['Greens/EFA', 'EPP', 'ALDE', 'GUE/NGL'];390
+41;['NI', 'S&D', 'Greens/EFA', 'EFDD', 'EPP'];562
+42;['NI', 'S&D', 'ALDE', 'Greens/EFA', 'EPP'];581
+43;['NI', 'S&D', 'ALDE', 'Greens/EFA', 'EFDD', 'EPP'];629
+44;['NI', 'GUE/NGL', 'ECR', 'Greens/EFA', 'EPP'];445
+45;['Greens/EFA', 'EPP', 'S&D', 'ECR'];532
+46;['EPP', 'NI', 'S&D'];464
+47;['NI', 'S&D', 'ECR', 'ALDE', 'EFDD', 'EPP'];649
+48;['Greens/EFA', 'EPP', 'GUE/NGL', 'ECR'];393
+49;['NI', 'S&D', 'ECR', 'ALDE', 'EFDD'];428
+50;['NI', 'S&D', 'GUE/NGL', 'ECR', 'Greens/EFA', 'EFDD'];463
+51;['NI', 'S&D', 'GUE/NGL', 'ECR', 'ALDE', 'Greens/EFA'];482
+52;['NI', 'ALDE', 'GUE/NGL', 'Greens/EFA', 'EFDD', 'EPP'];490
+53;['S&D', 'GUE/NGL', 'ECR', 'Greens/EFA', 'EFDD', 'EPP'];632
+54;['NI', 'S&D', 'ALDE', 'EFDD', 'EPP'];579
+55;['Greens/EFA', 'EPP', 'S&D', 'EFDD'];510
+56;['NI', 'ALDE', 'GUE/NGL', 'Greens/EFA', 'EPP'];442
+57;['NI', 'S&D', 'GUE/NGL', 'ECR', 'ALDE', 'EFDD', 'EPP'];701
+58;['S&D', 'GUE/NGL', 'ECR', 'Greens/EFA', 'EPP'];584
+59;['EPP', 'ALDE', 'ECR', 'EFDD'];406
+60;['NI', 'S&D', 'GUE/NGL', 'ECR', 'EPP'];586
+61;['NI', 'ALDE', 'ECR', 'Greens/EFA', 'EFDD', 'EPP'];508
+62;['NI', 'ALDE', 'GUE/NGL', 'ECR', 'EPP'];462
+63;['EPP', 'S&D', 'ECR', 'EFDD'];530
+64;['S&D', 'GUE/NGL', 'ALDE', 'Greens/EFA', 'EFDD', 'EPP'];629
+65;['S&D', 'ECR', 'ALDE', 'Greens/EFA', 'EPP'];599
+66;['NI', 'S&D', 'GUE/NGL', 'ECR', 'Greens/EFA', 'EFDD', 'EPP'];684
+67;['NI', 'S&D', 'GUE/NGL', 'EFDD', 'EPP'];564
+68;['NI', 'S&D', 'GUE/NGL', 'ECR', 'ALDE', 'Greens/EFA', 'EPP'];703
+69;['EPP', 'NI', 'S&D', 'ECR'];534
+70;['ALDE', 'GUE/NGL', 'ECR', 'EFDD', 'EPP'];458
+71;['NI', 'S&D', 'GUE/NGL', 'Greens/EFA', 'EFDD'];393
+72;['Greens/EFA', 'EPP', 'ALDE', 'ECR'];408
+73;['GUE/NGL', 'S&D', 'ECR', 'ALDE'];380
+74;['S&D', 'ALDE', 'Greens/EFA', 'EFDD', 'EPP'];577
+75;['NI', 'S&D', 'ALDE', 'Greens/EFA', 'EFDD'];408
+76;['ALDE', 'GUE/NGL', 'ECR', 'Greens/EFA', 'EFDD', 'EPP'];508
+77;['EPP', 'GUE/NGL', 'NI', 'ECR'];395
+78;['S&D', 'ECR', 'ALDE', 'EFDD', 'EPP'];597
+79;['EPP', 'S&D'];412
+80;['EPP', 'S&D', 'ALDE'];479
+81;['EPP', 'S&D', 'EFDD'];460
+82;['EPP', 'NI', 'ALDE', 'EFDD'];388
+83;['NI', 'S&D', 'ECR', 'ALDE', 'Greens/EFA', 'EPP'];651
+84;['NI', 'S&D', 'ECR', 'ALDE', 'Greens/EFA'];430
+85;['EPP', 'NI', 'S&D', 'GUE/NGL'];516
+86;['NI', 'S&D', 'ECR', 'Greens/EFA', 'EFDD'];411
+87;['NI', 'S&D', 'GUE/NGL', 'ECR', 'ALDE', 'EFDD'];480
+88;['EPP', 'NI', 'ALDE', 'GUE/NGL'];392
+89;['S&D', 'GUE/NGL', 'ECR', 'ALDE', 'EFDD', 'EPP'];649
+90;['EPP', 'S&D', 'GUE/NGL'];464
+91;['ALDE', 'ECR', 'Greens/EFA', 'EFDD', 'EPP'];456
+92;['NI', 'S&D', 'GUE/NGL', 'ALDE', 'Greens/EFA', 'EFDD'];460
+93;['S&D', 'ECR', 'ALDE', 'Greens/EFA', 'EFDD', 'EPP'];647
+94;['EPP', 'NI', 'ALDE', 'ECR'];410
+95;['S&D', 'GUE/NGL', 'ECR', 'EFDD', 'EPP'];582
+96;['EPP', 'NI', 'ECR', 'EFDD'];391
+97;['S&D', 'GUE/NGL', 'ECR', 'ALDE', 'EPP'];601
+98;['Greens/EFA', 'EPP', 'NI', 'S&D'];514
+99;['ALDE', 'GUE/NGL', 'Greens/EFA', 'EFDD', 'EPP'];438
+100;['NI', 'S&D', 'GUE/NGL', 'ECR', 'EFDD'];413
+101;['Greens/EFA', 'EPP', 'NI', 'ALDE'];390
+102;['S&D', 'GUE/NGL', 'Greens/EFA', 'EFDD', 'EPP'];562
+103;['EFDD', 'S&D', 'ECR', 'ALDE'];376
+104;['S&D', 'GUE/NGL', 'ALDE', 'Greens/EFA', 'EPP'];581
+105;['S&D', 'GUE/NGL', 'ECR', 'ALDE', 'Greens/EFA', 'EPP'];651
+106;['ALDE', 'GUE/NGL', 'ECR', 'Greens/EFA', 'EPP'];460
+107;['NI', 'S&D', 'GUE/NGL', 'ECR', 'ALDE', 'Greens/EFA', 'EFDD'];530
+108;['GUE/NGL', 'ECR', 'Greens/EFA', 'EFDD', 'EPP'];441
+109;['NI', 'S&D', 'GUE/NGL', 'ALDE', 'EFDD'];410
+110;['Greens/EFA', 'EPP', 'NI', 'ECR'];393
+111;['NI', 'S&D', 'GUE/NGL', 'ALDE', 'Greens/EFA', 'EFDD', 'EPP'];681
+112;['EPP', 'NI', 'S&D', 'EFDD'];512
+113;['NI', 'S&D', 'GUE/NGL', 'ECR', 'Greens/EFA'];415
+114;['EPP', 'NI', 'S&D', 'ALDE'];531
+115;['EPP', 'GUE/NGL', 'S&D', 'ECR'];534
+116;['NI', 'ALDE', 'ECR', 'EFDD', 'EPP'];458
+117;['NI', 'S&D', 'GUE/NGL', 'ALDE', 'EFDD', 'EPP'];631
+118;['S&D', 'ECR', 'Greens/EFA', 'EFDD', 'EPP'];580
+119;['Greens/EFA', 'EPP', 'S&D', 'GUE/NGL'];514
+120;['NI', 'ALDE', 'Greens/EFA', 'EFDD', 'EPP'];438
+121;['Greens/EFA', 'EPP', 'S&D'];462
+122;['NI', 'S&D', 'GUE/NGL', 'ALDE', 'Greens/EFA'];412
+123;['NI', 'ALDE', 'GUE/NGL', 'ECR', 'Greens/EFA', 'EFDD', 'EPP'];560
+124;['NI', 'S&D', 'ECR', 'ALDE', 'Greens/EFA', 'EFDD'];478
+125;['EPP', 'S&D', 'ECR'];482
+126;['NI', 'S&D', 'ECR', 'Greens/EFA', 'EPP'];584
