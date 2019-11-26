@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import itertools as it
-from collections import Counter
+from collections import Counter, OrderedDict
 
 
 def compute_coalitions(filepath):
@@ -35,13 +35,20 @@ def shapley_value(party_dict):
     for coalition in coalition_dict:
         for i, player in enumerate(coalition):
             playerless_coalition = coalition[:i]
-            if len(playerless_coalition) != 0:
+            if len(playerless_coalition):
                 playerless_value = coalition_dict[playerless_coalition]
             else:
                 playerless_value = 0
             player_inputs[player] += (coalition_dict[coalition] -
                                       playerless_value)
             player_participations[player] += 1
+
+    # get all winning_coalitions
+    winning_coals = [coal for coal, val in coalition_dict.items() if val]
+    winning_coals = [tuple(coal) for coal in set(map(frozenset, winning_coals))]
+    print(f"There are: {len(winning_coals)} winning coalitions")
+    for coal in winning_coals:
+        print(coal)
 
     for player in player_inputs:
         shapley_value = player_inputs[player] / player_participations[player]
