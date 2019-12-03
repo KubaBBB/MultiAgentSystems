@@ -15,10 +15,10 @@ def compute_coalitions(filepath):
     for indx, party, seats in party_records:
         if seats:
             party_dict[party] = seats
-    shapley_value(party_dict)
+    shapley_value(party_dict, df)
 
 
-def shapley_value(party_dict: dict):
+def shapley_value(party_dict: dict, org_df=None):
     """
     Calculates the player contributions aka Shapley
     values.
@@ -77,17 +77,30 @@ def shapley_value(party_dict: dict):
         tuple(coal) for coal in set(map(frozenset, winning_coals))
     ]
     print(f"There are: {len(winning_coals)} winning coalitions")
+    data = {
+        'Coalition': [],
+        'Seats': []
+    }
     for coal in winning_coals:
+        coalition_seats = sum([party_dict[party] for party in coal])
+        coal_name = ', '.join(coal)
+        data['Coalition'].append(coal_name)
+        data['Seats'].append(coalition_seats)
         print(
-            f"\tCoalition: {', '.join(coal)} has " +\
-                f"{sum([party_dict[party] for party in coal])} votes.")
+            f"\tCoalition: {coal_name} has " +\
+                f"{coalition_seats} seats.")
 
+    org_df['Shapley'] = 0.0
     for player in player_inputs:
         shapley_value = player_inputs[player] / len(coalition_dict)
         print(
             f"Player {player}: " + \
                 f"coalition input {shapley_value}"
         )
+        org_df.loc[org_df['Party'] == player, 'Shapley'] = shapley_value
+    df = pd.DataFrame.from_dict(data=data)
+    df.to_csv('coalition_output.csv', index=False)
+    org_df.to_csv('shapley_modified.csv', index=False)
 
 
 def calcualte_permutation_value(party_dict: dict, permutation, winning_seats):
