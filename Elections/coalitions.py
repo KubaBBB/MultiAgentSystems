@@ -33,8 +33,8 @@ def shapley_value(party_dict: dict, org_df=None):
     all_parties = list(party_dict.keys())
     total_seats = sum(party_dict.values())
     coalition_dict = {}
-    winning_seats = 0.5 * total_seats
-    print("Calculating Shapley value")
+    winning_seats = 0.5 * total_seats + 1
+    print(f"Calculating Shapley value, winning seats: {winning_seats}")
     combinations = 0
     for group_length in range(1, len(all_parties)+1):
         print(f"Calculating the groups of lengths {group_length}")
@@ -76,6 +76,15 @@ def shapley_value(party_dict: dict, org_df=None):
     winning_coals = [
         tuple(coal) for coal in set(map(frozenset, winning_coals))
     ]
+
+    # count player coalitions
+    player_coalitions = Counter()
+    for coalition in coalition_dict:
+        for player in player_inputs:
+            if player in coalition:
+                player_coalitions[player] += 1
+
+
     print(f"There are: {len(winning_coals)} winning coalitions")
     data = {
         'Coalition': [],
@@ -92,7 +101,7 @@ def shapley_value(party_dict: dict, org_df=None):
 
     org_df['Shapley'] = 0.0
     for player in player_inputs:
-        shapley_value = player_inputs[player] / len(coalition_dict)
+        shapley_value = player_inputs[player] / player_coalitions[player]
         print(
             f"Player {player}: " + \
                 f"coalition input {shapley_value}"
@@ -122,7 +131,7 @@ def calcualte_permutation_value(party_dict: dict, permutation, winning_seats):
     return 0.0
 
 
-# filepath = '/Users/jakubmojsiejuk/Documents/agh/game-gym/PrisonersDilemma/ElectionsUK/resources/2015.csv'
-filepath = '/Users/jakubmojsiejuk/Documents/agh/game-gym/PrisonersDilemma/ElectionsUK/resources/eu2014.csv'
-# filepath = '/Users/jakubmojsiejuk/Documents/agh/game-gym/PrisonersDilemma/ElectionsUK/resources/test.csv'
+# filepath = './Elections/resources/2015.csv'
+filepath = './Elections/resources/eu2014.csv'
+# filepath = './Elections/resources/test.csv'
 compute_coalitions(filepath)
