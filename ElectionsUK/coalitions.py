@@ -5,6 +5,10 @@ from collections import Counter, OrderedDict
 
 
 def compute_coalitions(filepath):
+    """
+    Reads the csv for elections and
+    computes the coalitions
+    """
     df = pd.read_csv(filepath, sep=';')
     party_records = df[['Party', 'Seats']].to_records()
     party_dict = {}
@@ -14,7 +18,18 @@ def compute_coalitions(filepath):
     shapley_value(party_dict)
 
 
-def shapley_value(party_dict):
+def shapley_value(party_dict: dict):
+    """
+    Calculates the player contributions aka Shapley
+    values.
+    :param party_dict
+        dictionary of parties and ther seits
+    :returns (produces)
+        dictionary of player combinations and 
+        values for each combination aka 
+        each coalition and value 
+        d = {(P1, P2, P3): 2, (P1): 1, ....}
+    """
     all_parties = list(party_dict.keys())
     total_seats = sum(party_dict.values())
     coalition_dict = {}
@@ -47,6 +62,7 @@ def shapley_value(party_dict):
         """
         for i in reversed(range(len(coalition))):
             if i == 0:
+                # just a single player in the coalition, so just add him
                 player_inputs[coalition[i]] += coalition_dict[(coalition[i],)]
                 break
             # we take player i reduced coalition
@@ -74,7 +90,16 @@ def shapley_value(party_dict):
         )
 
 
-def calcualte_permutation_value(party_dict, permutation, winning_seats):
+def calcualte_permutation_value(party_dict: dict, permutation, winning_seats):
+    """
+    Calculates the winning condition for each coalition
+    :param party_dict
+        dictionary of parties and their seats
+    :param permutation 
+        a given permutation of players
+    :param winning seats
+        number of seats that ensures the win
+    """
     # calculate_permutation value
     seats = 0
     for coalition_member in permutation:
