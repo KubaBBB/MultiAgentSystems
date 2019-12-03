@@ -30,7 +30,6 @@ def shapley_value(party_dict):
             combinations += 1
     print(f"Possible combinations: {combinations}")
     player_inputs = Counter()
-    player_participations = Counter()
     print("Calculating player's inputs")
     for coalition in coalition_dict:
         # print(f"Value for coalition: {coalition}, {coalition_dict[coalition]}")
@@ -48,7 +47,7 @@ def shapley_value(party_dict):
         """
         for i in reversed(range(len(coalition))):
             if i == 0:
-                player_inputs[(coalition[i],)] += coalition_dict[(coalition[i],)]
+                player_inputs[coalition[i]] += coalition_dict[(coalition[i],)]
                 break
             # we take player i reduced coalition
             reduced_coalition = coalition[:i]
