@@ -136,14 +136,14 @@ def statitstics_shapley(filenames):
     df = pd.DataFrame()
     for filename in filenames:
         tmp = pd.read_csv(filename)
-        tmp['year'] = filename.replace('eu', '').replace('.csv', '')
+        tmp['year'] = filename.replace('pl', '').replace('.csv', '')
         df = pd.concat([df, tmp], sort=True)
 
     # histogram
     mean = np.mean(df['Shapley'])
     std = np.std(df['Shapley'])
     ax = sns.distplot(df['Shapley'],
-                      bins=25,
+                    #   bins=25,
                       rug=True,
                       rug_kws={"color": "b"},
                       kde_kws={
@@ -170,14 +170,17 @@ def statitstics_shapley(filenames):
     ax.set_xlim([0.0, 0.5])
     ax.legend()
     ax.set_ylabel("Count of values")
-    ax.set_title("European elections 2009-2019- distribution of Shapley values")
-    plt.savefig("European.png")
+    ax.set_title("Polish elections 2007-2011- distribution of Shapley values")
+    plt.savefig("Polish.png")
     plt.show()
 
 
 filepath = './Elections/resources/eu2019.csv'
 filepath = './Elections/resources/eu2014.csv'
 filepath = './Elections/resources/eu2009.csv'
+filepath = './Elections/resources/pl2007.csv'
+# filepath = './Elections/resources/pl2011.csv'
+
 
 # filepath = './Elections/resources/test.csv'
 # compute_coalitions(filepath)
@@ -187,4 +190,8 @@ filenames = [
     './Elections/resources/eu2019_shapley_modified.csv'
 ]
 
+filenames = [
+    './Elections/resources/pl2007_shapley_modified.csv',
+    './Elections/resources/pl2011_shapley_modified.csv'
+]
 statitstics_shapley(filenames)
