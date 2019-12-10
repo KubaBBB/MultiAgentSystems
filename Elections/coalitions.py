@@ -3,7 +3,8 @@ import pandas as pd
 import itertools as it
 from collections import Counter, OrderedDict
 import seaborn as sns
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
+
 
 def compute_coalitions(filepath):
     """
@@ -108,7 +109,7 @@ def shapley_value(party_dict: dict, org_df=None, filepath=None):
         org_df.loc[org_df['Party'] == player, 'Shapley'] = shapley_value
     df = pd.DataFrame.from_dict(data=data)
     df.to_csv('coalition_output.csv', index=False)
-    savename = filepath.replace('.csv','')
+    savename = filepath.replace('.csv', '')
     org_df.to_csv(f'{savename}_shapley_modified.csv', index=False)
 
 
@@ -136,44 +137,54 @@ def statitstics_shapley(filenames):
     for filename in filenames:
         tmp = pd.read_csv(filename)
         tmp['year'] = filename.replace('eu', '').replace('.csv', '')
-        print(tmp.columns)
         df = pd.concat([df, tmp], sort=True)
-
 
     # histogram
     mean = np.mean(df['Shapley'])
     std = np.std(df['Shapley'])
     ax = sns.distplot(df['Shapley'],
-                 rug=True,
-                 rug_kws={"color": "b"},
-                 kde_kws={
-                     "color": "r",
-                     "lw": 3,
-                     "linestyle": '--',
-                     "label": "Predicted distribution"
-                 },
-                 hist_kws={
-                     "histtype": "step",
-                     "linewidth": 3,
-                     "alpha": 1,
-                     "color": "b"
-                 })
+                      bins=25,
+                      rug=True,
+                      rug_kws={"color": "b"},
+                      kde_kws={
+                          "color": "r",
+                          "lw": 3,
+                          "linestyle": '--',
+                          "label": "Predicted distribution"
+                      },
+                      hist_kws={
+                          "histtype": "step",
+                          "linewidth": 3,
+                          "alpha": 1,
+                          "color": "b"
+                      })
     ax.axvline(x=mean, label=f'Mean at = {np.around(mean,2)}', c='c', ls='--')
-    ax.axvline(x=mean+std,label=f'Std + at {np.around(mean+std,2)}', c='m', ls='-.')
-    ax.axvline(x=mean-std,label=f'Std - at {np.around(mean-std,2)}', c='m', ls='-.')
+    ax.axvline(x=mean + std,
+               label=f'Mean + std at {np.around(mean+std,2)}',
+               c='m',
+               ls='-.')
+    ax.axvline(x=mean - std,
+               label=f'Mean - std at {np.around(mean-std,2)}',
+               c='m',
+               ls='-.')
+    ax.set_xlim([0.0, 0.5])
     ax.legend()
     ax.set_ylabel("Count of values")
-    ax.set_title("European elections - distribution of Shapley values")
+    ax.set_title("European elections 2009-2019- distribution of Shapley values")
     plt.savefig("European.png")
     plt.show()
 
 
 filepath = './Elections/resources/eu2019.csv'
 filepath = './Elections/resources/eu2014.csv'
+filepath = './Elections/resources/eu2009.csv'
+
 # filepath = './Elections/resources/test.csv'
 # compute_coalitions(filepath)
 filenames = [
-    './Elections/resources/eu2014_shapley_modified.csv', './Elections/resources/eu2019_shapley_modified.csv'
+    './Elections/resources/eu2009_shapley_modified.csv',
+    './Elections/resources/eu2014_shapley_modified.csv',
+    './Elections/resources/eu2019_shapley_modified.csv'
 ]
 
 statitstics_shapley(filenames)
