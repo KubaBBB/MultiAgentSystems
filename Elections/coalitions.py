@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import itertools as it
 from collections import Counter, OrderedDict
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 
 def compute_coalitions(filepath):
@@ -15,10 +17,10 @@ def compute_coalitions(filepath):
     for indx, party, seats in party_records:
         if seats:
             party_dict[party] = seats
-    shapley_value(party_dict, df)
+    shapley_value(party_dict, df, filepath)
 
 
-def shapley_value(party_dict: dict, org_df=None):
+def shapley_value(party_dict: dict, org_df=None, filepath=None):
     """
     Calculates the player contributions aka Shapley
     values.
@@ -36,7 +38,7 @@ def shapley_value(party_dict: dict, org_df=None):
     winning_seats = 0.5 * total_seats + 1
     print(f"Calculating Shapley value, winning seats: {winning_seats}")
     combinations = 0
-    for group_length in range(1, len(all_parties)+1):
+    for group_length in range(1, len(all_parties) + 1):
         print(f"Calculating the groups of lengths {group_length}")
         for permutation in it.permutations(all_parties, r=group_length):
             coalition_value = calcualte_permutation_value(
@@ -63,12 +65,14 @@ def shapley_value(party_dict: dict, org_df=None):
         for i in reversed(range(len(coalition))):
             if i == 0:
                 # just a single player in the coalition, so just add him
-                player_inputs[coalition[i]] += coalition_dict[(coalition[i],)]
+                player_inputs[coalition[i]] += coalition_dict[(coalition[i], )]
                 break
             # we take player i reduced coalition
-            reduced_coalition = coalition[:i]
+            reduced_coalition = coalition[:
+                                          i]  # if i == 1, then is a single player
             reduced_coalition_value = coalition_dict[reduced_coalition]
-            player_inputs[coalition[i]] += (current_coalition_value - reduced_coalition_value)
+            player_inputs[coalition[i]] += (current_coalition_value -
+                                            reduced_coalition_value)
             current_coalition_value = reduced_coalition_value
     # get all winning_coalitions
     print(player_inputs)
@@ -84,12 +88,8 @@ def shapley_value(party_dict: dict, org_df=None):
             if player in coalition:
                 player_coalitions[player] += 1
 
-
     print(f"There are: {len(winning_coals)} winning coalitions")
-    data = {
-        'Coalition': [],
-        'Seats': []
-    }
+    data = {'Coalition': [], 'Seats': []}
     for coal in winning_coals:
         coalition_seats = sum([party_dict[party] for party in coal])
         coal_name = ', '.join(coal)
@@ -109,7 +109,8 @@ def shapley_value(party_dict: dict, org_df=None):
         org_df.loc[org_df['Party'] == player, 'Shapley'] = shapley_value
     df = pd.DataFrame.from_dict(data=data)
     df.to_csv('coalition_output.csv', index=False)
-    org_df.to_csv('shapley_modified.csv', index=False)
+    savename = filepath.replace('.csv', '')
+    org_df.to_csv(f'{savename}_shapley_modified.csv', index=False)
 
 
 def calcualte_permutation_value(party_dict: dict, permutation, winning_seats):
@@ -131,7 +132,66 @@ def calcualte_permutation_value(party_dict: dict, permutation, winning_seats):
     return 0.0
 
 
-# filepath = './Elections/resources/2015.csv'
+def statitstics_shapley(filenames):
+    df = pd.DataFrame()
+    for filename in filenames:
+        tmp = pd.read_csv(filename)
+        tmp['year'] = filename.replace('pl', '').replace('.csv', '')
+        df = pd.concat([df, tmp], sort=True)
+
+    # histogram
+    mean = np.mean(df['Shapley'])
+    std = np.std(df['Shapley'])
+    ax = sns.distplot(df['Shapley'],
+                    #   bins=25,
+                      rug=True,
+                      rug_kws={"color": "b"},
+                      kde_kws={
+                          "color": "r",
+                          "lw": 3,
+                          "linestyle": '--',
+                          "label": "Predicted distribution"
+                      },
+                      hist_kws={
+                          "histtype": "step",
+                          "linewidth": 3,
+                          "alpha": 1,
+                          "color": "b"
+                      })
+    ax.axvline(x=mean, label=f'Mean at = {np.around(mean,2)}', c='c', ls='--')
+    ax.axvline(x=mean + std,
+               label=f'Mean + std at {np.around(mean+std,2)}',
+               c='m',
+               ls='-.')
+    ax.axvline(x=mean - std,
+               label=f'Mean - std at {np.around(mean-std,2)}',
+               c='m',
+               ls='-.')
+    ax.set_xlim([0.0, 0.5])
+    ax.legend()
+    ax.set_ylabel("Count of values")
+    ax.set_title("Polish elections 2007-2011- distribution of Shapley values")
+    plt.savefig("Polish.png")
+    plt.show()
+
+
+filepath = './Elections/resources/eu2019.csv'
 filepath = './Elections/resources/eu2014.csv'
+filepath = './Elections/resources/eu2009.csv'
+filepath = './Elections/resources/pl2007.csv'
+# filepath = './Elections/resources/pl2011.csv'
+
+
 # filepath = './Elections/resources/test.csv'
-compute_coalitions(filepath)
+# compute_coalitions(filepath)
+filenames = [
+    './Elections/resources/eu2009_shapley_modified.csv',
+    './Elections/resources/eu2014_shapley_modified.csv',
+    './Elections/resources/eu2019_shapley_modified.csv'
+]
+
+filenames = [
+    './Elections/resources/pl2007_shapley_modified.csv',
+    './Elections/resources/pl2011_shapley_modified.csv'
+]
+statitstics_shapley(filenames)
