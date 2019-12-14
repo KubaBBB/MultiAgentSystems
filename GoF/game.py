@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt 
 import matplotlib.animation as animation 
 import os
+from time import sleep
 
 filename='input1.txt'
 
@@ -11,6 +12,17 @@ filename='input1.txt'
 ON = 255
 OFF = 0
 vals = [ON, OFF] 
+
+def fill_from_file(i, j, grid, filename):
+	with open(os.path.join(os.path.dirname(__file__), 'resources', filename)) as f:
+		content = f.readlines()
+	# you may also want to remove whitespace characters like `\n` at the end of each line
+	content = [x.strip() for x in content]
+	for index in range(content.__len__()):
+		sep = content[index].index(',')
+		values = [content[index][0:sep], content[index][sep+1:content[index].__len__()]]
+		grid[int(values[0])+i, int(values[1])+i] = 255
+
 
 def random_grid(N):
 
@@ -24,12 +36,6 @@ def add_glider(i, j, grid):
 					[255, 0, 255], 
 					[0, 255, 255]]) 
 	grid[i:i+3, j:j+3] = glider 
-
-def fill_from_file(i, j, grid, filename):
-	with open(os.path.join(os.path.dirname(__file__), 'resources', filename)) as f:
-		content = f.readlines()
-	# you may also want to remove whitespace characters like `\n` at the end of each line
-	content = [x.strip() for x in content]
 
 def add_gosper_glider_gun(i, j, grid):
 
@@ -66,7 +72,8 @@ def update(frameNum, img, grid, N):
 
 	# copy grid since we require 8 neighbors 
 	# for calculation and we go line by line 
-	newGrid = grid.copy() 
+	newGrid = grid.copy()
+	#sleep(2)
 	for i in range(N): 
 		for j in range(N): 
 
@@ -104,7 +111,9 @@ def main():
 	parser.add_argument('--mov-file', dest='movfile', required=False) 
 	parser.add_argument('--interval', dest='interval', required=False) 
 	parser.add_argument('--glider', action='store_true', required=False) 
-	parser.add_argument('--gosper', action='store_true', required=False) 
+	parser.add_argument('--gosper', action='store_true', required=False)
+	parser.add_argument('--file', action='store_true', required=False)
+
 	args = parser.parse_args() 
 	
 	# set grid size 
@@ -129,7 +138,7 @@ def main():
 		add_gosper_glider_gun(10, 10, grid)
 	elif args.file:
 		grid = np.zeros(N*N).reshape(N,N)
-		fill_from_file(10, 10, filename)
+		fill_from_file(10, 10, grid, filename)
 	else: # populate grid with random on/off - 
 			# more off than on 
 		grid = random_grid(N)
