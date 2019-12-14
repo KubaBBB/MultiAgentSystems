@@ -3,18 +3,21 @@ import argparse
 import numpy as np 
 import matplotlib.pyplot as plt 
 import matplotlib.animation as animation 
+import os
+
+filename='input1.txt'
 
 # setting up the values for the grid 
 ON = 255
 OFF = 0
 vals = [ON, OFF] 
 
-def randomGrid(N): 
+def random_grid(N):
 
 	"""returns a grid of NxN random values"""
 	return np.random.choice(vals, N*N, p=[0.2, 0.8]).reshape(N, N) 
 
-def addGlider(i, j, grid): 
+def add_glider(i, j, grid):
 
 	"""adds a glider with top left cell at (i, j)"""
 	glider = np.array([[0, 0, 255], 
@@ -22,11 +25,18 @@ def addGlider(i, j, grid):
 					[0, 255, 255]]) 
 	grid[i:i+3, j:j+3] = glider 
 
-def addGosperGliderGun(i, j, grid): 
+def fill_from_file(i, j, grid, filename):
+	with open(os.path.join(os.path.dirname(__file__), 'resources', filename)) as f:
+		content = f.readlines()
+	# you may also want to remove whitespace characters like `\n` at the end of each line
+	content = [x.strip() for x in content]
+
+def add_gosper_glider_gun(i, j, grid):
 
 	"""adds a Gosper Glider Gun with top left 
 	cell at (i, j)"""
-	gun = np.zeros(11*38).reshape(11, 38) 
+
+	gun = np.zeros(11*38).reshape(11, 38)
 
 	gun[5][1] = gun[5][2] = 255
 	gun[6][1] = gun[6][2] = 255
@@ -113,14 +123,16 @@ def main():
 	# check if "glider" demo flag is specified 
 	if args.glider: 
 		grid = np.zeros(N*N).reshape(N, N) 
-		addGlider(1, 1, grid) 
+		add_glider(1, 1, grid)
 	elif args.gosper: 
 		grid = np.zeros(N*N).reshape(N, N) 
-		addGosperGliderGun(10, 10, grid) 
-
+		add_gosper_glider_gun(10, 10, grid)
+	elif args.file:
+		grid = np.zeros(N*N).reshape(N,N)
+		fill_from_file(10, 10, filename)
 	else: # populate grid with random on/off - 
 			# more off than on 
-		grid = randomGrid(N) 
+		grid = random_grid(N)
 
 	# set up animation 
 	fig, ax = plt.subplots() 
