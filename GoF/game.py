@@ -23,6 +23,28 @@ def fill_from_file(i, j, grid, filename):
 		values = [content[index][0:sep], content[index][sep+1:content[index].__len__()]]
 		grid[int(values[0])+i, int(values[1])+i] = 255
 
+def read_pattern(pattern):
+	with open(os.path.join(os.path.dirname(__file__), 'resources', 'patterns', f'{pattern}.txt')) as f:
+		content = f.readlines()
+	values = []
+	max_width, max_height = 0, 0
+	content = [x.strip() for x in content]
+	for index in range(content.__len__()):
+		sep = content[index].index(',')
+		x = int(content[index][0:sep])
+		y = int(content[index][sep+1:content[index].__len__()])
+		if x > max_width:
+			max_width = x
+		if y > max_height:
+			max_height = y
+		values.append([x,y])
+	pattern = np.zeros(shape=(max_width+2, max_height+2), dtype=int)
+	for coord in values:
+		pattern[coord[0], coord[1]] = 255
+	return pattern
+
+def count_pattern_on_grid(grid, pattern):
+	t = 0
 
 def random_grid(N):
 
@@ -115,7 +137,10 @@ def main():
 	parser.add_argument('--file', action='store_true', required=False)
 
 	args = parser.parse_args() 
-	
+	patterns = ['block', 'tub', 'blinker_1', 'blinker_2']
+	patternsGrid = []
+	for pattern in patterns:
+		patternsGrid.append(read_pattern(pattern))
 	# set grid size 
 	N = 100
 	if args.N and int(args.N) > 8: 
