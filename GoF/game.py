@@ -4,9 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt 
 import matplotlib.animation as animation 
 import os
-from time import sleep
 
-filename='input1.txt'
+filename='test.txt'
 
 # setting up the values for the grid 
 ON = 255
@@ -44,7 +43,22 @@ def read_pattern(pattern):
 	return pattern
 
 def count_pattern_on_grid(grid, pattern):
-	t = 0
+	N = len(grid)
+	x, y = pattern.shape
+	counter = 0
+	diff = 0
+	for i in range(int(x/2), int(N-x/2)-1):
+		for j in range(int(y/2), int(N-y/2)-1):
+			for idx in range(x):
+				for idy in range(y):
+					g = int(grid[i+idx, j+idy])
+					p = pattern[idx, idy]
+					if g != p:
+						diff +=1
+			if not diff:
+				counter += 1
+			diff = 0
+	return counter
 
 def random_grid(N):
 
@@ -95,8 +109,7 @@ def update(frameNum, img, grid, N):
 	# copy grid since we require 8 neighbors 
 	# for calculation and we go line by line 
 	newGrid = grid.copy()
-	#sleep(2)
-	for i in range(N): 
+	for i in range(N):
 		for j in range(N): 
 
 			# compute 8-neghbor sum 
@@ -167,7 +180,10 @@ def main():
 	else: # populate grid with random on/off - 
 			# more off than on 
 		grid = random_grid(N)
-
+	statistics = []
+	for pattern in patternsGrid:
+		counter = count_pattern_on_grid(grid, pattern)
+		statistics.append(counter)
 	# set up animation 
 	fig, ax = plt.subplots() 
 	img = ax.imshow(grid, interpolation='nearest') 
