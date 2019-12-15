@@ -105,15 +105,15 @@ def add_gosper_glider_gun(i, j, grid):
 
 	grid[i:i+11, j:j+38] = gun 
 
-def update(frameNum, img, grid, N, patternsGrid):
+def update(frameNum, img, grid, N, patternsGrid, logger):
 	statistics = dict()
 	print('--- NEW ITERATION ---')
-
+	logger.append('Next iteration')
 	for pattern in patternsGrid:
 		counter = count_pattern_on_grid(grid, patternsGrid[pattern])
 		statistics[pattern] = counter
 		print(f'pattern:{pattern} -> counter:{counter}')
-
+		logger.append(f'pattern:{pattern} -> counter:{counter}')
 	# copy grid since we require 8 neighbors
 	# for calculation and we go line by line 
 	newGrid = grid.copy()
@@ -190,10 +190,11 @@ def main():
 			# more off than on 
 		grid = random_grid(N)
 
+	logger = []
 	# set up animation
 	fig, ax = plt.subplots() 
 	img = ax.imshow(grid, interpolation='nearest') 
-	ani = animation.FuncAnimation(fig, update, fargs=(img, grid, N, patternsGrid),
+	ani = animation.FuncAnimation(fig, update, fargs=(img, grid, N, patternsGrid, logger),
 								frames = 10,
 								interval=updateInterval, 
 								save_count=50) 
@@ -202,8 +203,8 @@ def main():
 	# set output file 
 	if args.movfile: 
 		ani.save(args.movfile, fps=30, extra_args=['-vcodec', 'libx264']) 
-
-	plt.show() 
+	plt.show()
+	print(logger.__len__())
 
 # call main 
 if __name__ == '__main__': 
