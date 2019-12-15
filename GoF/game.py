@@ -47,15 +47,16 @@ def count_pattern_on_grid(grid, pattern):
 	x, y = pattern.shape
 	counter = 0
 	diff = 0
-	for i in range(int(N-x/2)-1):
-		for j in range(int(N-y/2)-1):
+	xCut = 1 if x/2 == 0 else 2
+	yCut = 1 if y/2 == 0 else 2
+	for i in range(int(N-x/2)-xCut):
+		for j in range(int(N-y/2)-yCut):
 			for idx in range(x):
 				for idy in range(y):
-					grid[i:]
 					g = int(grid[i+idx, j+idy])
 					p = pattern[idx, idy]
 					if g != p:
-						diff +=1
+						diff += 1
 			if not diff:
 				counter += 1
 			diff = 0
@@ -155,10 +156,11 @@ def main():
 	parser.add_argument('--interval', dest='interval', required=False) 
 	parser.add_argument('--glider', action='store_true', required=False) 
 	parser.add_argument('--gosper', action='store_true', required=False)
-	parser.add_argument('--file', action='store_true', required=False)
+	parser.add_argument('--file', dest='file', required=False)
 
-	args = parser.parse_args() 
-	patterns = ['block', 'tub', 'blinker_1', 'blinker_2']
+	args = parser.parse_args()
+	#Trzeba robic reshape na glider bo statek moze sie poruszac w inne strony
+	patterns = ['block', 'tub', 'blinker_1', 'blinker_2', 'glider_1', 'glider_2', 'glider_3', 'glider_4', 'pond']
 	patternsGrid = dict()
 	for pattern in patterns:
 		patternsGrid[pattern] = read_pattern(pattern)
@@ -167,7 +169,9 @@ def main():
 	N = 100
 	if args.N and int(args.N) > 8: 
 		N = int(args.N) 
-		
+
+	if args.file:
+		filename = args.file
 	# set animation update interval 
 	updateInterval = 200
 	if args.interval: 
