@@ -7,7 +7,7 @@ import os
 
 filename='test.txt'
 
-# setting up the values for the grid 
+# setting up the values for the grid
 ON = 255
 OFF = 0
 vals = [ON, OFF] 
@@ -47,10 +47,11 @@ def count_pattern_on_grid(grid, pattern):
 	x, y = pattern.shape
 	counter = 0
 	diff = 0
-	for i in range(int(x/2), int(N-x/2)-1):
-		for j in range(int(y/2), int(N-y/2)-1):
+	for i in range(int(N-x/2)-1):
+		for j in range(int(N-y/2)-1):
 			for idx in range(x):
 				for idy in range(y):
+					grid[i:]
 					g = int(grid[i+idx, j+idy])
 					p = pattern[idx, idy]
 					if g != p:
@@ -104,14 +105,20 @@ def add_gosper_glider_gun(i, j, grid):
 
 	grid[i:i+11, j:j+38] = gun 
 
-def update(frameNum, img, grid, N): 
+def update(frameNum, img, grid, N, patternsGrid):
+	statistics = dict()
+	print('--- NEW ITERATION ---')
 
-	# copy grid since we require 8 neighbors 
+	for pattern in patternsGrid:
+		counter = count_pattern_on_grid(grid, patternsGrid[pattern])
+		statistics[pattern] = counter
+		print(f'pattern:{pattern} -> counter:{counter}')
+
+	# copy grid since we require 8 neighbors
 	# for calculation and we go line by line 
 	newGrid = grid.copy()
 	for i in range(N):
-		for j in range(N): 
-
+		for j in range(N):
 			# compute 8-neghbor sum 
 			# using toroidal boundary conditions - x and y wrap around 
 			# so that the simulaton takes place on a toroidal surface. 
@@ -130,7 +137,8 @@ def update(frameNum, img, grid, N):
 
 	# update data 
 	img.set_data(newGrid) 
-	grid[:] = newGrid[:] 
+	grid[:] = newGrid[:]
+	print('')
 	return img, 
 
 # main() function 
@@ -151,16 +159,17 @@ def main():
 
 	args = parser.parse_args() 
 	patterns = ['block', 'tub', 'blinker_1', 'blinker_2']
-	patternsGrid = []
+	patternsGrid = dict()
 	for pattern in patterns:
-		patternsGrid.append(read_pattern(pattern))
-	# set grid size 
+		patternsGrid[pattern] = read_pattern(pattern)
+
+	# set grid size
 	N = 100
 	if args.N and int(args.N) > 8: 
 		N = int(args.N) 
 		
 	# set animation update interval 
-	updateInterval = 50
+	updateInterval = 200
 	if args.interval: 
 		updateInterval = int(args.interval) 
 
@@ -180,15 +189,12 @@ def main():
 	else: # populate grid with random on/off - 
 			# more off than on 
 		grid = random_grid(N)
-	statistics = []
-	for pattern in patternsGrid:
-		counter = count_pattern_on_grid(grid, pattern)
-		statistics.append(counter)
-	# set up animation 
+
+	# set up animation
 	fig, ax = plt.subplots() 
 	img = ax.imshow(grid, interpolation='nearest') 
-	ani = animation.FuncAnimation(fig, update, fargs=(img, grid, N, ), 
-								frames = 10, 
+	ani = animation.FuncAnimation(fig, update, fargs=(img, grid, N, patternsGrid),
+								frames = 10,
 								interval=updateInterval, 
 								save_count=50) 
 
