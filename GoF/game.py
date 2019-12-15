@@ -47,10 +47,10 @@ def count_pattern_on_grid(grid, pattern):
 	x, y = pattern.shape
 	counter = 0
 	diff = 0
-	xCut = 1 if x/2 == 0 else 2
-	yCut = 1 if y/2 == 0 else 2
-	for i in range(int(N-x/2)-xCut):
-		for j in range(int(N-y/2)-yCut):
+	x_cut = 1 if x/2 == 0 else 2
+	y_cut = 1 if y/2 == 0 else 2
+	for i in range(int(N-x/2)-x_cut):
+		for j in range(int(N-y/2)-y_cut):
 			for idx in range(x):
 				for idy in range(y):
 					g = int(grid[i+idx, j+idy])
@@ -106,12 +106,12 @@ def add_gosper_glider_gun(i, j, grid):
 
 	grid[i:i+11, j:j+38] = gun 
 
-def update(frameNum, img, grid, N, patternsGrid, logger):
+def update(frameNum, img, grid, N, patterns_grid, logger):
 	statistics = dict()
 	print('--- NEW ITERATION ---')
 	logger.append('Next iteration')
-	for pattern in patternsGrid:
-		counter = count_pattern_on_grid(grid, patternsGrid[pattern])
+	for pattern in patterns_grid:
+		counter = count_pattern_on_grid(grid, patterns_grid[pattern])
 		statistics[pattern] = counter
 		print(f'pattern:{pattern} -> counter:{counter}')
 		logger.append(f'pattern:{pattern} -> counter:{counter}')
@@ -161,9 +161,9 @@ def main():
 	args = parser.parse_args()
 	#Trzeba robic reshape na glider bo statek moze sie poruszac w inne strony
 	patterns = ['block', 'tub', 'blinker_1', 'blinker_2', 'glider_1', 'glider_2', 'glider_3', 'glider_4', 'pond']
-	patternsGrid = dict()
+	patterns_grid = dict()
 	for pattern in patterns:
-		patternsGrid[pattern] = read_pattern(pattern)
+		patterns_grid[pattern] = read_pattern(pattern)
 
 	# set grid size
 	N = 100
@@ -173,9 +173,9 @@ def main():
 	if args.file:
 		filename = args.file
 	# set animation update interval 
-	updateInterval = 200
+	update_interval = 200
 	if args.interval: 
-		updateInterval = int(args.interval) 
+		update_interval = int(args.interval)
 
 	# declare grid 
 	grid = np.array([]) 
@@ -198,9 +198,9 @@ def main():
 	# set up animation
 	fig, ax = plt.subplots() 
 	img = ax.imshow(grid, interpolation='nearest') 
-	ani = animation.FuncAnimation(fig, update, fargs=(img, grid, N, patternsGrid, logger),
+	ani = animation.FuncAnimation(fig, update, fargs=(img, grid, N, patterns_grid, logger),
 								frames = 10,
-								interval=updateInterval, 
+								interval=update_interval,
 								save_count=50) 
 
 	# # of frames? 
