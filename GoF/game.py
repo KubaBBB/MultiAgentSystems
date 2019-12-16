@@ -65,6 +65,27 @@ def count_pattern_on_grid(grid, patterns):
 					t = 0
 	return counter
 
+def add_extra_patterns_of_glider(patterns_grid):
+	base_patterns = patterns_grid['glider']
+	extra_patterns = []
+	for base_pattern in base_patterns:
+		transpose = base_pattern.transpose()
+		extra_patterns.append(transpose)
+		
+	for ex_pattern in extra_patterns:
+		for p in base_patterns:
+			cnt = 0
+			x, y = p.shape
+			for idx in range(x-1):
+				for idy in range(y-1):
+					if p[idx][idy] == ex_pattern[idx][idy]:
+						cnt+=1
+			if cnt == 25:
+				print("duplicated")
+		v = 0
+		patterns_grid['glider'].append(ex_pattern)
+
+
 def random_grid(N):
 
 	"""returns a grid of NxN random values"""
@@ -175,13 +196,17 @@ def main():
 
 	args = parser.parse_args()
 	#Trzeba robic reshape na glider bo statek moze sie poruszac w inne strony
-	patterns = ['block', 'tub', 'blinker_1', 'blinker_2', 'glider_1', 'glider_2', 'glider_3', 'glider_4', 'pond']
+	patterns = ['block', 'tub', 'pond', 'blinker_1', 'blinker_2']
+	for x in range(1,8):
+		patterns.append(f'glider_{x}')
 	patterns_grid = dict()
 	for pattern in patterns:
 		pattern_aggregate = re.sub("_\d+", "", pattern)
 		if not pattern_aggregate in patterns_grid.keys():
 			patterns_grid[pattern_aggregate] = []
 		patterns_grid[pattern_aggregate].append(read_pattern(pattern))
+
+	#add_extra_patterns_of_glider(patterns_grid)
 
 	# set grid size
 	N = 100
