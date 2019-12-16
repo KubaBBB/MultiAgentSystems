@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt 
 import matplotlib.animation as animation 
 import os
+import re
 
 filename='test.txt'
 
@@ -111,10 +112,17 @@ def update(frameNum, img, grid, N, patterns_grid, logger):
 	print('--- NEW ITERATION ---')
 	logger.append('Next iteration')
 	for pattern in patterns_grid:
+		pattern_aggregate = re.sub("_\d+", "", pattern)
+		if not pattern_aggregate in statistics.keys():
+			statistics[pattern_aggregate] = 0
+
 		counter = count_pattern_on_grid(grid, patterns_grid[pattern])
-		statistics[pattern] = counter
+		statistics[pattern_aggregate] += counter
+
 		print(f'pattern:{pattern} -> counter:{counter}')
 		logger.append(f'pattern:{pattern} -> counter:{counter}')
+
+	print(statistics)
 	# copy grid since we require 8 neighbors
 	# for calculation and we go line by line 
 	newGrid = grid.copy()
@@ -173,7 +181,7 @@ def main():
 	if args.file:
 		filename = args.file
 	# set animation update interval 
-	update_interval = 200
+	update_interval = 50
 	if args.interval: 
 		update_interval = int(args.interval)
 
@@ -197,7 +205,7 @@ def main():
 	logger = []
 	# set up animation
 	fig, ax = plt.subplots() 
-	img = ax.imshow(grid, interpolation='nearest') 
+	img = ax.imshow(grid, interpolation='nearest')
 	ani = animation.FuncAnimation(fig, update, fargs=(img, grid, N, patterns_grid, logger),
 								frames = 10,
 								interval=update_interval,
