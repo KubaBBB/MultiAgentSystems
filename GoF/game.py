@@ -43,24 +43,26 @@ def read_pattern(pattern):
 		pattern[coord[0], coord[1]] = 255
 	return pattern
 
-def count_pattern_on_grid(grid, pattern):
+def count_pattern_on_grid(grid, patterns):
 	N = len(grid)
-	x, y = pattern.shape
+	x, y = patterns[0].shape
 	counter = 0
 	diff = 0
 	x_cut = 1 if x/2 == 0 else 2
 	y_cut = 1 if y/2 == 0 else 2
 	for i in range(int(N-x/2)-x_cut):
 		for j in range(int(N-y/2)-y_cut):
-			for idx in range(x):
-				for idy in range(y):
-					g = int(grid[i+idx, j+idy])
-					p = pattern[idx, idy]
-					if g != p:
-						diff += 1
-			if not diff:
-				counter += 1
-			diff = 0
+			for pattern in patterns:
+				try:
+					for idx in range(x):
+						for idy in range(y):
+							g = int(grid[i+idx, j+idy])
+							p = pattern[idx, idy]
+							if g != p:
+								raise KeyError
+					counter += 1
+				except:
+					t = 0
 	return counter
 
 def random_grid(N):
@@ -112,12 +114,17 @@ def update(frameNum, img, grid, N, patterns_grid, logger):
 	print('--- NEW ITERATION ---')
 	logger.append('Next iteration')
 	for pattern in patterns_grid:
-		pattern_aggregate = re.sub("_\d+", "", pattern)
-		if not pattern_aggregate in statistics.keys():
-			statistics[pattern_aggregate] = 0
+		counter =0
+		if not pattern in statistics.keys():
+			statistics[pattern] = 0
 
-		counter = count_pattern_on_grid(grid, patterns_grid[pattern])
-		statistics[pattern_aggregate] += counter
+		if pattern == 'blinker':
+			counter += count_pattern_on_grid(grid, [patterns_grid[pattern][0]])
+			counter += count_pattern_on_grid(grid, [patterns_grid[pattern][1]])
+		else:
+			counter += count_pattern_on_grid(grid, patterns_grid[pattern])
+
+		statistics[pattern] = counter
 
 		print(f'pattern:{pattern} -> counter:{counter}')
 		logger.append(f'pattern:{pattern} -> counter:{counter}')
@@ -171,7 +178,10 @@ def main():
 	patterns = ['block', 'tub', 'blinker_1', 'blinker_2', 'glider_1', 'glider_2', 'glider_3', 'glider_4', 'pond']
 	patterns_grid = dict()
 	for pattern in patterns:
-		patterns_grid[pattern] = read_pattern(pattern)
+		pattern_aggregate = re.sub("_\d+", "", pattern)
+		if not pattern_aggregate in patterns_grid.keys():
+			patterns_grid[pattern_aggregate] = []
+		patterns_grid[pattern_aggregate].append(read_pattern(pattern))
 
 	# set grid size
 	N = 100
@@ -201,11 +211,13 @@ def main():
 	else: # populate grid with random on/off - 
 			# more off than on 
 		grid = random_grid(N)
-
+	#l = patterns_grid['glider']
+	#counter = count_pattern_on_grid(grid, l)
 	logger = []
 	# set up animation
 	fig, ax = plt.subplots() 
 	img = ax.imshow(grid, interpolation='nearest')
+	#update(img, grid, N, patterns_grid, logger)
 	ani = animation.FuncAnimation(fig, update, fargs=(img, grid, N, patterns_grid, logger),
 								frames = 10,
 								interval=update_interval,
