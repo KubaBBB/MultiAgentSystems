@@ -167,7 +167,7 @@ def statitstics_shapley(filenames):
                label=f'Mean - std at {np.around(mean-std,2)}',
                c='m',
                ls='-.')
-    ax.set_xlim([0.0, 0.5])
+    ax.set_xlim([0.0, 0.9])
     ax.legend()
     ax.set_ylabel("Count of values")
     ax.set_title("Polish elections 2007-2011- distribution of Shapley values")
